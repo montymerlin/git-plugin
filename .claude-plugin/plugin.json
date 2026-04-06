@@ -1,11 +1,11 @@
 {
   "name": "git-cowork",
-  "version": "0.1.0",
-  "description": "Git workflow toolkit for Claude Cowork. Guided commits, pull requests, and repo orientation — with built-in handling for FUSE/virtiofs sandboxed environments.",
+  "version": "0.2.0",
+  "description": "Git workflow toolkit for Claude Cowork. Guided commits, pull requests, repo orientation, and human-readable changelogs — with built-in handling for FUSE/virtiofs sandboxed environments.",
   "author": {
     "name": "Monty Merlin"
   },
   "repository": "https://github.com/montymerlin/git-cowork-plugin",
   "license": "MIT",
-  "keywords": ["git", "commit", "pull-request", "workflow", "cowork", "version-control"]
+  "keywords": ["git", "commit", "pull-request", "changelog", "workflow", "cowork", "version-control"]
 }

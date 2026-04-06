@@ -1,6 +1,6 @@
 # git-cowork
 
-Git workflow toolkit for Claude Cowork. Guided commits, pull requests, and repo orientation — with built-in handling for FUSE/virtiofs sandboxed environments.
+Git workflow toolkit for Claude Cowork. Guided commits, pull requests, repo orientation, and human-readable changelogs — with built-in handling for FUSE/virtiofs sandboxed environments.
 
 ## What's included
 
@@ -11,6 +11,7 @@ Git workflow toolkit for Claude Cowork. Guided commits, pull requests, and repo 
 | `/commit` | "commit", "save my changes", "git commit" | Guided staging and committing with smart grouping, safety checks, and convention-aware message drafting |
 | `/pr` | "create a PR", "open a pull request", "submit PR" | Guided pull request creation with structured descriptions, push handling, and template support |
 | `/status` | "what's the status", "where are we", "orient me" | Comprehensive repo overview — branch, working tree, recent history, stashes, and health checks |
+| `/logchange` | "logchange", "update changelog", "what's changed" | Maintain a human-readable CHANGELOG.md — distills git history (or manual notes) into high-level summaries. Works in git repos and non-git folders |
 
 ### References
 
@@ -81,6 +82,7 @@ Future skills under consideration:
 - `/branch` — Create/switch/clean up branches with naming conventions
 - `/sync` — Pull/rebase with conflict handling guidance
 - `/release` — Tag and release workflow
+- `/diff` — Review changes with context before committing
 
 ## License
 
