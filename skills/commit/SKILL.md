@@ -73,12 +73,12 @@ Before staging anything, think through:
 1. **Are there logically separate changes?** If the working tree contains unrelated changes (e.g. a bug fix AND a new feature AND a config update), propose **grouped commits** — one per logical unit. Ask the user to confirm the grouping.
 
 2. **Are there files that should NOT be committed?** Watch for:
-   - `.env`, credentials, secrets, API keys
+   - Secrets and credentials: `.env`, `.env.*`, `credentials.json`, `.github_token`, `*.key`, `*.pem`, files containing API keys or tokens
    - Large binaries or generated files
    - OS files (`.DS_Store`, `Thumbs.db`)
    - Build artifacts (`node_modules/`, `dist/`, `__pycache__/`)
 
-   If any are present, warn the user before proceeding.
+   **Never commit files likely containing secrets.** If any are present, warn the user and exclude them from the commit. If the user specifically asks to commit them, confirm they understand the risk.
 
 3. **Is this a single coherent change?** If yes, proceed to Step 5.
 
