@@ -1,6 +1,6 @@
 {
   "name": "git-cowork",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Git workflow toolkit for Claude Cowork. Guided commits, pull requests, repo orientation, and human-readable changelogs — with built-in handling for FUSE/virtiofs sandboxed environments.",
   "author": {
     "name": "Monty Merlin"

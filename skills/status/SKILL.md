@@ -1,5 +1,5 @@
 ---
-name: status
+name: git:status
 description: >
   Get a comprehensive overview of the current git repo state. Use when the user says
   "what's the status", "where are we", "git status", "what's changed", "orient me",
