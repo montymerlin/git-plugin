@@ -8,7 +8,7 @@
       "name": "git",
       "source": "./",
       "description": "Git workflow toolkit — guided commits, pull requests, and repo orientation for Claude Code, Cursor, and Cowork.",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "author": {
         "name": "Monty Merlin"
       },

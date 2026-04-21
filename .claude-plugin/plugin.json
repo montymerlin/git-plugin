@@ -1,6 +1,6 @@
 {
   "name": "git",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Git workflow toolkit for Claude Code and Cowork. Guided commits, pull requests, repo orientation — with environment-aware handling for Claude Code CLI, Cursor, and sandboxed Cowork environments.",
   "author": {
     "name": "Monty Merlin"

@@ -4,6 +4,12 @@ A narrative record of how this plugin evolves. Updated after significant work se
 
 ---
 
+## 2026-04-21 — v0.3.1: Dual-distribution standardization
+
+Added Distribution section to CLAUDE.md covering Claude Code CLI, Cowork, and auto-update behaviour. The plugin already had marketplace.json and dual-install README sections — this aligns CLAUDE.md with the same pattern across all six portfolio plugins. See Decision 004.
+
+---
+
 ## 2026-04-21 — v0.3.0: Rebrand, environment-aware lock handling, marketplace
 
 The plugin was renamed from `git-cowork` to `git-plugin`. The original name was accurate — it was built specifically to handle Cowork's sandboxed FUSE/virtiofs filesystem where stale `.git/*.lock` files can't be removed from within the session. But the skills are host-agnostic: the commit, PR, and status workflows are equally useful in Claude Code CLI and Cursor, and the Cowork-specific framing was narrowing perceived utility unnecessarily.

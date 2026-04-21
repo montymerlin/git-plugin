@@ -52,6 +52,17 @@ git-plugin/
 - **Git tags on release:** tag every version bump (`git tag v0.3.0`)
 - **Version-check before committing:** plugin.json version = latest CHANGELOG heading = commit message
 
+### Distribution
+
+This plugin supports two installation paths:
+
+- **Claude Code CLI:** `claude plugins install github.com/montymerlin/git-plugin` (uses `marketplace.json`)
+- **Claude Cowork (desktop):** Package as `.plugin` zip and drag into Cowork chat, or install from the plugin marketplace
+
+Both paths load the same skills. The plugin adapts its behaviour based on the detected environment (see Environment Detection below).
+
+**Auto-update:** Claude Code pins to a commit SHA at install time; users update manually or via marketplace sync. Cowork requires re-uploading the `.plugin` file or GitHub sync if configured at the organization level.
+
 ### Documentation
 - **README.md** — human-facing: skills table, installation, per-repo customisation
 - **references/git-explained.md** — git mental model for non-technical users

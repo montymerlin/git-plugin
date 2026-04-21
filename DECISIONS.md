@@ -66,3 +66,19 @@ Claude Code / Cursor (`GIT_ENV=claude-code`): remove stale lock files inline and
 **Alternatives Considered:**
 - *Keep in git-plugin* — pragmatic but conceptually muddled; the artifact lifecycle reasoning is cleaner
 - *Standalone plugin* — overkill for a single skill
+
+---
+
+## Decision 004 — Dual-distribution standardization (2026-04-21)
+
+**Context:** The plugin already had a marketplace.json and dual-install instructions in README.md. However, CLAUDE.md lacked an explicit Distribution section. As the full plugin portfolio standardised on a consistent distribution pattern, git-plugin needed the same CLAUDE.md treatment for consistency.
+
+**Decision:** Add a Distribution section to CLAUDE.md covering Claude Code CLI (`claude plugins install`), Cowork (`.plugin` zip), and auto-update behaviour. No marketplace.json or README changes needed — those were already in place.
+
+**Consequences:**
+- CLAUDE.md now explicitly documents both install paths and auto-update behaviour
+- Agent sessions have distribution context without needing to read README
+- Pattern is consistent across all six plugins in the portfolio
+
+**Alternatives Considered:**
+- *Leave as-is* — the info was in README already, but agents read CLAUDE.md, not README
