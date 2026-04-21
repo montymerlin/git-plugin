@@ -11,7 +11,7 @@ Git workflow toolkit for Claude Code, Cursor, and Cowork. Guided commits, pull r
 | `/commit` | "commit", "save my changes", "git commit" | Guided staging and committing with smart grouping, safety checks, and convention-aware message drafting |
 | `/pr` | "create a PR", "open a pull request", "submit PR" | Guided pull request creation with structured descriptions, push handling, and template support |
 | `/status` | "what's the status", "where are we", "orient me" | Comprehensive repo overview — branch, working tree, recent history, stashes, and health checks |
-| `/logchange` | "logchange", "update changelog", "what's changed" | *(moved to agentic-scaffold-plugin)* Maintain a human-readable CHANGELOG.md — distills git history into high-level summaries |
+| ~~`/logchange`~~ | — | *Removed in v0.3.0 — moved to [agentic-scaffold-plugin](https://github.com/montymerlin/agentic-scaffold) as `agentic-scaffold:logchange`* |
 
 ### References
 

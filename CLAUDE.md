@@ -20,8 +20,7 @@ git-plugin/
 ├── skills/
 │   ├── commit/                # guided staging and committing
 │   ├── pr/                    # guided pull request creation
-│   ├── status/                # comprehensive repo orientation
-│   └── logchange/             # moved to agentic-scaffold-plugin (retained here temporarily)
+│   └── status/                # comprehensive repo orientation
 ├── references/
 │   └── git-explained.md       # git from first principles for non-technical users
 ├── CLAUDE.md                  # this file — agent instruction set
@@ -38,7 +37,7 @@ git-plugin/
 - Skills are namespaced as `git:<skill>` (e.g., `git:commit`, `git:pr`)
 - All skills check for stale `.git/*.lock` files before running any git command — this is the single most common failure mode in sandboxed environments
 - Convention-aware: the commit skill reads the workspace's `CLAUDE.md` and `README` for repo-specific commit conventions
-- Note: `logchange` has moved to `agentic-scaffold-plugin` where it belongs as a repo-artifact maintenance skill
+- `logchange` was removed in v0.3.0 and moved to `agentic-scaffold-plugin` as `agentic-scaffold:logchange` (see Decision 003)
 
 ### Safety principles
 - **Never auto-push.** Always confirm with the user before pushing to a remote.

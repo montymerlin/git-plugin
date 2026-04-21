@@ -22,8 +22,11 @@ No active near-term items.
 
 - **Non-GitHub remote support** — The `/pr` skill currently assumes GitHub (via `gh` CLI). GitLab (`glab`), Bitbucket, and Azure DevOps have their own CLIs. `status: parked`
 - **Interactive rebase guidance** — Walk non-technical users through interactive rebase for cleaning up commit history before a PR. High value but complex to guide safely. `status: parked`
+
 ## Decided
 
 - **Adopted agentic scaffold** — → Decision 001. `status: decided`
-- **Plugin-name rename** — Rebranded from `git-cowork` to `git-plugin` in v0.3.0. → Decision 002. `status: decided`
+- **Environment-aware lock file handling** — Detect host and adapt lock file strategy. → Decision 002. `status: decided`
+- **Plugin-name rename** — Rebranded from `git-cowork` to `git-plugin` in v0.3.0 (documented in CHANGELOG v0.3.0, not a separate decision). `status: decided`
 - **logchange migration** — Moved to `agentic-scaffold-plugin` where it belongs with the CHANGELOG.md lifecycle. → Decision 003. `status: decided`
+- **Dual-distribution standardization** — Added Distribution section to CLAUDE.md. → Decision 004. `status: decided`

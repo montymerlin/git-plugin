@@ -22,7 +22,7 @@ A self-hosted marketplace entry (`.claude-plugin/marketplace.json`) was added to
 
 ---
 
-## 2026-04-21 — adopted agentic scaffold
+## 2026-04-21 — v0.2.2: Adopted agentic scaffold
 
 Added CLAUDE.md, CHANGELOG.md, DECISIONS.md, and ROADMAP.md. The plugin already had a solid README with installation docs and per-repo customisation guidance; the scaffold adds agent instructions, version tracking, and a decision log. Migrated the future skill ideas from README's roadmap section into ROADMAP.md proper. See Decision 001.
 
