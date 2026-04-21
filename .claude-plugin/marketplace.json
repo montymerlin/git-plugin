@@ -1,0 +1,21 @@
+{
+  "name": "git",
+  "owner": {
+    "name": "Monty Merlin"
+  },
+  "plugins": [
+    {
+      "name": "git",
+      "source": "./",
+      "description": "Git workflow toolkit — guided commits, pull requests, and repo orientation for Claude Code, Cursor, and Cowork.",
+      "version": "0.3.0",
+      "author": {
+        "name": "Monty Merlin"
+      },
+      "repository": "https://github.com/montymerlin/git-plugin",
+      "license": "MIT",
+      "category": "productivity",
+      "tags": ["git", "commit", "pull-request", "workflow", "version-control"]
+    }
+  ]
+}

@@ -10,15 +10,40 @@ description: >
 
 Create well-structured pull requests with meaningful descriptions. Follow these steps in order.
 
-## Step 1: Check for stale lock files
+## Step 1: Detect environment and handle stale lock files
 
-Run:
+**This step is mandatory before any git operation.**
+
+First detect the host environment:
+
+```bash
+if [ "${CLAUDE_COWORK}" = "1" ] || mount 2>/dev/null | grep -q virtiofs; then
+  GIT_ENV="cowork"
+else
+  GIT_ENV="claude-code"
+fi
+```
+
+Then check for lock files:
 
 ```bash
 ls .git/*.lock 2>/dev/null
 ```
 
-If any `.lock` files exist, stop immediately and ask the user to clear them from their local terminal (see the commit skill for full instructions). Do not proceed until confirmed.
+**If lock files exist:**
+
+- **Claude Code / Cursor (`GIT_ENV=claude-code`):** Remove them inline and continue:
+  ```bash
+  rm -f .git/*.lock
+  echo "Removed stale lock files, continuing."
+  ```
+
+- **Cowork (`GIT_ENV=cowork`):** Stop immediately. Tell the user:
+  > Stale lock file found at `.git/index.lock` (or whichever). In Cowork the filesystem is sandboxed — please run `rm -f <repo-path>/.git/*.lock` from your local terminal, then confirm and I'll continue.
+  
+  Wait for user confirmation before proceeding.
+
+If no lock files exist, continue to Step 2.
 
 ## Step 2: Check for repo conventions
 

@@ -9,7 +9,7 @@ description: >
 
 # Git Status Overview
 
-Provide a comprehensive, human-readable orientation to the current repo state. This is especially useful at the start of a Cowork session.
+Provide a comprehensive, human-readable orientation to the current repo state. Useful at the start of any session — Claude Code CLI, Cursor, or Cowork.
 
 ## Step 1: Check for stale lock files
 
@@ -19,10 +19,18 @@ Run:
 ls .git/*.lock 2>/dev/null
 ```
 
-If any exist, warn the user immediately — these will block all git operations. Ask them to clear from their local terminal:
+If any exist, warn the user immediately — these will block all git operations. Detect the environment to advise the correct fix:
+
+```bash
+if [ "${CLAUDE_COWORK}" = "1" ] || mount 2>/dev/null | grep -q virtiofs; then
+  GIT_ENV="cowork"
+else
+  GIT_ENV="claude-code"
+fi
 ```
-rm -f <repo-path>/.git/*.lock
-```
+
+- **Claude Code / Cursor (`GIT_ENV=claude-code`):** Remove inline: `rm -f .git/*.lock`
+- **Cowork (`GIT_ENV=cowork`):** Ask the user to run `rm -f <repo-path>/.git/*.lock` from their local terminal
 
 Report the lock status regardless, then continue gathering the rest of the overview.
 

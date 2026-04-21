@@ -1,6 +1,6 @@
-# git-cowork
+# git-plugin
 
-Git workflow toolkit for Claude Cowork. Guided commits, pull requests, repo orientation, and human-readable changelogs — with built-in handling for FUSE/virtiofs sandboxed environments.
+Git workflow toolkit for Claude Code, Cursor, and Cowork. Guided commits, pull requests, and repo orientation — with environment-aware handling for FUSE/virtiofs sandboxed environments.
 
 ## What's included
 
@@ -11,7 +11,7 @@ Git workflow toolkit for Claude Cowork. Guided commits, pull requests, repo orie
 | `/commit` | "commit", "save my changes", "git commit" | Guided staging and committing with smart grouping, safety checks, and convention-aware message drafting |
 | `/pr` | "create a PR", "open a pull request", "submit PR" | Guided pull request creation with structured descriptions, push handling, and template support |
 | `/status` | "what's the status", "where are we", "orient me" | Comprehensive repo overview — branch, working tree, recent history, stashes, and health checks |
-| `/logchange` | "logchange", "update changelog", "what's changed" | Maintain a human-readable CHANGELOG.md — distills git history (or manual notes) into high-level summaries. Works in git repos and non-git folders |
+| `/logchange` | "logchange", "update changelog", "what's changed" | *(moved to agentic-scaffold-plugin)* Maintain a human-readable CHANGELOG.md — distills git history into high-level summaries |
 
 ### References
 
@@ -21,11 +21,21 @@ Git workflow toolkit for Claude Cowork. Guided commits, pull requests, repo orie
 
 ### Key features
 
-**FUSE lock detection** — All skills check for stale `.git/*.lock` files before running any git command. In sandboxed environments (Cowork, remote containers), lock files from previous sessions can persist and block all git operations. The plugin catches this early and guides you through the fix, preventing cascading failures.
+**Environment-aware lock file handling** — All skills detect whether they're running in Claude Code CLI/Cursor (full filesystem access) or Cowork (FUSE/virtiofs sandbox) and handle stale `.git/*.lock` files accordingly. In CLI environments, locks are removed inline and the workflow continues. In Cowork, the skill stops immediately and tells you exactly which file to remove from your local terminal.
 
 **Convention-aware** — The commit skill reads `CLAUDE.md` and `README` for repo-specific commit conventions (message format, co-author tags, excluded files, grouped commit preferences) and follows them automatically.
 
 **Safety-first** — Never auto-pushes. Never uses `git add .` or `git add -A`. Warns about secrets, large binaries, and detached HEAD. Proposes grouped commits for unrelated changes. Always asks for confirmation before executing.
+
+## Environments
+
+### Claude Code CLI / Cursor
+- Bash tool has full filesystem access
+- Stale lock files are removed inline and the workflow continues automatically
+
+### Claude Cowork (desktop sandbox)
+- Filesystem is FUSE/virtiofs-mounted — direct lock file removal is not permitted from within the agent
+- Skills stop and ask you to run `rm -f <repo-path>/.git/*.lock` from your local terminal, then continue once confirmed
 
 ## Installation
 
@@ -34,7 +44,7 @@ Git workflow toolkit for Claude Cowork. Guided commits, pull requests, repo orie
 Open the `.plugin` file in Claude Desktop, or install from the plugin marketplace:
 
 ```
-/plugin install git-cowork
+/plugin install git
 ```
 
 ### Claude Code CLI
@@ -43,10 +53,10 @@ Copy the skills to your global skills directory:
 
 ```bash
 # Clone the repo
-git clone https://github.com/montymerlin/git-cowork-plugin.git
+git clone https://github.com/montymerlin/git-plugin.git
 
 # Copy skills to Claude Code's global config
-cp -r git-cowork-plugin/skills/* ~/.claude/skills/
+cp -r git-plugin/skills/* ~/.claude/skills/
 ```
 
 Or install as a project-level plugin by copying the plugin directory into your project.

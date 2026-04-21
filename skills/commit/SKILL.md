@@ -11,26 +11,40 @@ description: >
 
 Produce clean, meaningful commits with well-crafted messages. Follow these steps in order. Do not skip steps.
 
-## Step 1: Check for stale lock files
+## Step 1: Detect environment and handle stale lock files
 
-**This step is mandatory before any git operation.** Sandboxed environments (Claude Desktop Cowork, remote containers) mount the host filesystem via FUSE/virtiofs. Lock files left by previous sessions persist and **cannot be deleted from within the sandbox** — you'll get "Operation not permitted."
+**This step is mandatory before any git operation.**
 
-Run:
+First detect the host environment:
+
+```bash
+if [ "${CLAUDE_COWORK}" = "1" ] || mount 2>/dev/null | grep -q virtiofs; then
+  GIT_ENV="cowork"
+else
+  GIT_ENV="claude-code"
+fi
+```
+
+Then check for lock files:
 
 ```bash
 ls .git/*.lock 2>/dev/null
 ```
 
-If any `.lock` files exist:
+**If lock files exist:**
 
-1. **Stop immediately.** Do not attempt any git operations — they will fail and may create *additional* lock files, compounding the problem.
-2. Tell the user which lock files exist and ask them to remove them from their local terminal:
-   ```
-   rm -f <repo-path>/.git/*.lock
-   ```
-3. Wait for the user to confirm the locks are cleared before proceeding to Step 2.
+- **Claude Code / Cursor (`GIT_ENV=claude-code`):** Remove them inline and continue:
+  ```bash
+  rm -f .git/*.lock
+  echo "Removed stale lock files, continuing."
+  ```
 
-If no lock files exist, continue.
+- **Cowork (`GIT_ENV=cowork`):** Stop immediately. Tell the user:
+  > Stale lock file found at `.git/index.lock` (or whichever). In Cowork the filesystem is sandboxed — please run `rm -f <repo-path>/.git/*.lock` from your local terminal, then confirm and I'll continue.
+  
+  Wait for user confirmation before proceeding.
+
+If no lock files exist, continue to Step 2.
 
 ## Step 2: Check for repo conventions
 
