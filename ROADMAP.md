@@ -1,4 +1,4 @@
-# Roadmap — git-cowork
+# Roadmap — git-plugin
 
 Where this plugin could go. Items here are aspirations, not commitments. When an item is evaluated, the outcome moves to the Decided section with a pointer to DECISIONS.md.
 
@@ -22,8 +22,8 @@ No active near-term items.
 
 - **Non-GitHub remote support** — The `/pr` skill currently assumes GitHub (via `gh` CLI). GitLab (`glab`), Bitbucket, and Azure DevOps have their own CLIs. `status: parked`
 - **Interactive rebase guidance** — Walk non-technical users through interactive rebase for cleaning up commit history before a PR. High value but complex to guide safely. `status: parked`
-- **Plugin-name rename** — The plugin is currently named `git-cowork` in the manifest, which ties it to Cowork branding. The skills are host-agnostic (they just need git and gh). Consider renaming to `git-workflows` or similar, following the mdpowers rename precedent (Decision 005 in mdpowers). `status: parked`
-
 ## Decided
 
 - **Adopted agentic scaffold** — → Decision 001. `status: decided`
+- **Plugin-name rename** — Rebranded from `git-cowork` to `git-plugin` in v0.3.0. → Decision 002. `status: decided`
+- **logchange migration** — Moved to `agentic-scaffold-plugin` where it belongs with the CHANGELOG.md lifecycle. → Decision 003. `status: decided`
