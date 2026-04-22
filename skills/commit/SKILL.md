@@ -4,7 +4,7 @@ description: >
   Stage and commit changes with a well-crafted message. Use when the user says
   "commit", "save my changes", "commit this", "git commit", "commit what we've done",
   "stage and commit", or wants to commit work to git. Reads repo-specific commit
-  conventions from CLAUDE.md if present.
+  conventions from AGENTS.md, CLAUDE.md, or README if present.
 ---
 
 # Guided Git Commit Workflow
@@ -21,7 +21,7 @@ First detect the host environment:
 if [ "${CLAUDE_COWORK}" = "1" ] || mount 2>/dev/null | grep -q virtiofs; then
   GIT_ENV="cowork"
 else
-  GIT_ENV="claude-code"
+  GIT_ENV="local"
 fi
 ```
 
@@ -33,7 +33,7 @@ ls .git/*.lock 2>/dev/null
 
 **If lock files exist:**
 
-- **Claude Code / Cursor (`GIT_ENV=claude-code`):** Remove them inline and continue:
+- **Local terminal host (`GIT_ENV=local`):** Remove them inline and continue:
   ```bash
   rm -f .git/*.lock
   echo "Removed stale lock files, continuing."
@@ -48,7 +48,7 @@ If no lock files exist, continue to Step 2.
 
 ## Step 2: Check for repo conventions
 
-Check if the current repo has commit conventions defined in its CLAUDE.md or README. Look for sections like "Commit conventions", "Git workflow", or "Committing changes". If found, follow those conventions — they override the defaults in this skill.
+Check if the current repo has commit conventions defined in its AGENTS.md, CLAUDE.md, or README. Look for sections like "Commit conventions", "Git workflow", or "Committing changes". If found, follow those conventions — they override the defaults in this skill.
 
 Common repo-specific conventions include:
 
@@ -130,7 +130,6 @@ Follow the style of recent commits in the repo (from Step 3). If no clear style 
 
 <optional body — only if the summary isn't self-explanatory>
 
-Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 **Types:** `add` (new feature/file), `update` (enhance existing), `fix` (bug fix), `refactor` (restructure without behaviour change), `docs` (documentation only), `chore` (config, deps, tooling)
@@ -140,7 +139,6 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - Keep the summary line under 72 characters
 - Use imperative mood ("add feature" not "added feature")
 - Don't end the summary with a period
-- Include `Co-Authored-By: Claude <noreply@anthropic.com>` unless repo conventions specify otherwise
 
 ## Step 7: Execute
 
@@ -161,8 +159,6 @@ git add <file1> <file2> ...
 ```bash
 git commit -m "$(cat <<'EOF'
 <commit message here>
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 EOF
 )"
 ```

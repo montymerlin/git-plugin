@@ -20,7 +20,7 @@ First detect the host environment:
 if [ "${CLAUDE_COWORK}" = "1" ] || mount 2>/dev/null | grep -q virtiofs; then
   GIT_ENV="cowork"
 else
-  GIT_ENV="claude-code"
+  GIT_ENV="local"
 fi
 ```
 
@@ -32,7 +32,7 @@ ls .git/*.lock 2>/dev/null
 
 **If lock files exist:**
 
-- **Claude Code / Cursor (`GIT_ENV=claude-code`):** Remove them inline and continue:
+- **Local terminal host (`GIT_ENV=local`):** Remove them inline and continue:
   ```bash
   rm -f .git/*.lock
   echo "Removed stale lock files, continuing."
@@ -47,7 +47,7 @@ If no lock files exist, continue to Step 2.
 
 ## Step 2: Check for repo conventions
 
-Check if the current repo has PR conventions defined in its CLAUDE.md or README. Look for sections like "Pull request conventions", "PR template", or "Contributing guidelines". If found, follow those conventions.
+Check if the current repo has PR conventions defined in its AGENTS.md, CLAUDE.md, or README. Look for sections like "Pull request conventions", "PR template", or "Contributing guidelines". If found, follow those conventions.
 
 Also check for a PR template:
 

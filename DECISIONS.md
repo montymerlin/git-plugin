@@ -82,3 +82,22 @@ Claude Code / Cursor (`GIT_ENV=claude-code`): remove stale lock files inline and
 
 **Alternatives Considered:**
 - *Leave as-is* — the info was in README already, but agents read CLAUDE.md, not README
+
+---
+
+## Decision 005 — Canonicalize git-plugin instructions around AGENTS.md (2026-04-22)
+
+**Context:** The plugin already worked across multiple hosts, but its repo conventions were still Claude-first. `CLAUDE.md` was the only canonical instruction file, the skills looked for target-repo conventions only in `CLAUDE.md` or README, and the commit workflow still carried Claude-specific co-author assumptions in its default examples. That conflicts with the newer compatibility-layer pattern adopted across the plugin portfolio.
+
+**Decision:** Make `AGENTS.md` the canonical instruction file for the repo. Keep `CLAUDE.md` as a thin wrapper. Update the skills so they look for repo conventions in `AGENTS.md`, `CLAUDE.md`, or `README.md`, in that order. Add Codex install/update scripts and remove the hardcoded Claude co-author default from the commit workflow.
+
+**Consequences:**
+- The repo matches the same canonical-file pattern as mdpowers and agentic-scaffold
+- Target repos using AGENTS.md get first-class convention discovery from commit and PR workflows
+- Claude-specific metadata stays where it belongs: `.claude-plugin/`
+- Codex can consume the same skills directly through workspace symlinks or vendor installs
+- The actual git workflow stays stable; this is mostly a documentation and convention-source migration
+
+**Alternatives Considered:**
+- *Leave git-plugin on the old pattern* — would keep reintroducing CLAUDE-first assumptions into cross-host workflows
+- *Support only AGENTS.md and drop CLAUDE.md checks entirely* — too abrupt; compatibility-layer discovery is more practical

@@ -1,11 +1,11 @@
 {
   "name": "git",
-  "version": "0.3.1",
-  "description": "Git workflow toolkit for Claude Code and Cowork. Guided commits, pull requests, repo orientation — with environment-aware handling for Claude Code CLI, Cursor, and sandboxed Cowork environments.",
+  "version": "0.4.0",
+  "description": "Git workflow toolkit for local terminal hosts and constrained sandboxes. Guided commits, pull requests, and repo orientation with AGENTS.md-aware convention discovery and Claude packaging compatibility.",
   "author": {
     "name": "Monty Merlin"
   },
   "repository": "https://github.com/montymerlin/git-plugin",
   "license": "MIT",
-  "keywords": ["git", "commit", "pull-request", "workflow", "claude-code", "cowork", "version-control"]
+  "keywords": ["git", "commit", "pull-request", "workflow", "version-control", "agents-md", "codex", "cowork"]
 }

@@ -4,6 +4,12 @@ A narrative record of how this plugin evolves. Updated after significant work se
 
 ---
 
+## 2026-04-22 — v0.4.0: AGENTS.md canon and Codex install support
+
+Reframed the plugin as a host-agnostic git workflow toolkit with Claude packaging compatibility rather than a Claude-first repo. `AGENTS.md` is now the canonical instruction file, `CLAUDE.md` is a thin compatibility wrapper, and the skills now look for repo conventions in `AGENTS.md`, `CLAUDE.md`, or `README.md` instead of assuming a Claude-specific source of truth.
+
+Added Codex install/update scripts and removed the hardcoded Claude co-author default from the commit workflow, which makes the plugin fit better across multiple local hosts while preserving the same safety-first git behaviour. See Decision 005.
+
 ## 2026-04-21 — v0.3.1: Dual-distribution standardization
 
 Added Distribution section to CLAUDE.md covering Claude Code CLI, Cowork, and auto-update behaviour. The plugin already had marketplace.json and dual-install README sections — this aligns CLAUDE.md with the same pattern across all six portfolio plugins. See Decision 004.

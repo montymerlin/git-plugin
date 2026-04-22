@@ -17,6 +17,7 @@ No active near-term items.
 - **`/sync` skill** — Pull/rebase with conflict handling guidance. Especially valuable in sandboxed environments where merge conflicts can be disorienting. `status: idea`
 - **`/release` skill** — Tag and release workflow with version bumping, changelog generation, and push confirmation. Could integrate with the versioning conventions established across all plugins. `status: idea`
 - **`/diff` skill** — Review changes with context before committing. More detailed than what `/commit` shows — full file-level diffs with annotation. `status: idea`
+- **More host wrappers** — Extend the `AGENTS.md` canonical pattern if other tool-specific compatibility files become relevant. `status: idea`
 
 ## Parking lot
 
@@ -30,3 +31,4 @@ No active near-term items.
 - **Plugin-name rename** — Rebranded from `git-cowork` to `git-plugin` in v0.3.0 (documented in CHANGELOG v0.3.0, not a separate decision). `status: decided`
 - **logchange migration** — Moved to `agentic-scaffold-plugin` where it belongs with the CHANGELOG.md lifecycle. → Decision 003. `status: decided`
 - **Dual-distribution standardization** — Added Distribution section to CLAUDE.md. → Decision 004. `status: decided`
+- **Canonicalize git-plugin instructions around AGENTS.md** — → Decision 005. `status: decided`
