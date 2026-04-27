@@ -4,6 +4,16 @@ A narrative record of how this plugin evolves. Updated after significant work se
 
 ---
 
+## 2026-04-27 — Plugin audit pass + skill name fix
+
+Audited the plugin against `/create-cowork-plugin` standards. Fixed the namespaced skill `name:` frontmatter bug — all 3 SKILL.md files had `name: git:<skill>` which caused doubled runtime IDs (`git:git:commit` etc.) at install time. Per Anthropic convention, the host prepends the plugin name automatically; SKILL.md `name:` should match the bare directory name. Fixed to `commit`, `pr`, `status`.
+
+Also added: `.gitignore` (was missing), `SETUP.md` § "Quick Install (for AI agents)" decision tree for environment-aware install routing, `SETUP.md` § "Cowork" 3-option pattern (GitHub Releases / build locally / workspace packager skill) so external users can produce a `.plugin` file without depending on this workspace, and `SETUP.md` § "Claude Code CLI" global-vs-local install split with explicit user question. AGENTS.md Canonical Structure was updated to include SETUP.md, plus a new "Packaging for Cowork" section pointing at the canonical install flow.
+
+## 2026-04-27 — Cowork packaging: SETUP.md as setup canon
+
+Added `SETUP.md` as the single source of truth for install pathways and host compatibility, consolidating the previous Installation, Environments, and Requirements information (including the host-aware `.git/*.lock` behavior that distinguishes local terminals from Cowork sandboxes). `README.md`'s installation section was trimmed to a brief pointer at SETUP.md. The plugin is now packaged as `git-0.4.0.plugin` in `ops/plugins/_dist/` using the new `cowork-plugin-packager` skill. No skill behavior changes.
+
 ## 2026-04-22 — v0.4.0: AGENTS.md canon and Codex install support
 
 Reframed the plugin as a host-agnostic git workflow toolkit with Claude packaging compatibility rather than a Claude-first repo. `AGENTS.md` is now the canonical instruction file, `CLAUDE.md` is a thin compatibility wrapper, and the skills now look for repo conventions in `AGENTS.md`, `CLAUDE.md`, or `README.md` instead of assuming a Claude-specific source of truth.

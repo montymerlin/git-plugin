@@ -1,5 +1,5 @@
 ---
-name: git:pr
+name: pr
 description: >
   Create a pull request with a well-structured description. Use when the user says
   "create a PR", "open a pull request", "submit PR", "make a PR", "pr this",

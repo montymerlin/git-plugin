@@ -1,5 +1,5 @@
 ---
-name: git:commit
+name: commit
 description: >
   Stage and commit changes with a well-crafted message. Use when the user says
   "commit", "save my changes", "commit this", "git commit", "commit what we've done",
