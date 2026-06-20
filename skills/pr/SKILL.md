@@ -30,20 +30,17 @@ Then check for lock files:
 ls .git/*.lock 2>/dev/null
 ```
 
-**If lock files exist:**
+**Handling:**
 
-- **Local terminal host (`GIT_ENV=local`):** Remove them inline and continue:
+- **`local`:** If lock files exist, remove them inline and continue:
   ```bash
   rm -f .git/*.lock
   echo "Removed stale lock files, continuing."
   ```
 
-- **Cowork (`GIT_ENV=cowork`):** Stop immediately. Tell the user:
-  > Stale lock file found at `.git/index.lock` (or whichever). In Cowork the filesystem is sandboxed — please run `rm -f <repo-path>/.git/*.lock` from your local terminal, then confirm and I'll continue.
-  
-  Wait for user confirmation before proceeding.
+- **`cowork`:** A PR needs `git push` and `gh`, neither of which can run in the sandbox (the workspace mount denies `unlink`, and the sandbox has no GitHub credentials). Do **not** stop and do **not** try to remove locks — instead, do all the read-only analysis (Steps 2–5) and emit a **handoff** in Step 6 for the user to run on the host. Just note any present lock files; the handoff folds in a `rm -f .git/*.lock` line.
 
-If no lock files exist, continue to Step 2.
+Continue to Step 2.
 
 ## Step 2: Check for repo conventions
 
@@ -141,6 +138,10 @@ PR plan:
 
 ## Step 6: Execute
 
+Branch on `GIT_ENV` from Step 1.
+
+### Step 6 (local): push and create the PR
+
 Push if needed:
 
 ```bash
@@ -158,13 +159,42 @@ EOF
 
 If targeting a non-default base branch, add `--base <branch>`.
 
+### Step 6 (cowork): generate the PR handoff prompt
+
+Push and `gh pr create` can't run in the sandbox, and a fresh Claude Code session will choose better mechanics than predefined commands. Produce **one deliverable**: a single, self-contained **handoff prompt** the user pastes into a Claude Code chat opened in the repo. Render it inside a fenced code block so it's one-click copyable. Carry the context you have from the session so Claude Code doesn't rebuild it from the diff. Never use a sandbox path (`/sessions/...`, `/mnt/.virtiofs-root/...`) — reference the repo by name/host path.
+
+The prompt must include: framing (opening a PR for work from a separate session, no prior context); the repo; the branch and base; a short why-focused summary of what the PR contains; the PR title; the full PR description (delimited with sentinel lines, not nested backticks); and instructions to push the branch, open the PR with `gh` following any repo PR template/conventions, report the PR URL, and not merge. Let Claude Code pick the commands.
+
+**Template:**
+
+```text
+You're opening a PR for work from a separate Cowork session — no prior
+context, so it's all here.
+
+Repo: <repo-name> (<path-on-host if known>)
+Branch: <branch> → base <base-branch>
+
+What this PR contains:
+- <why-focused summary line(s)>
+
+PR title: <title>
+
+PR description:
+=== DESCRIPTION START ===
+<description body>
+=== DESCRIPTION END ===
+
+Then: clear any stale .git/*.lock, push the branch, and open the PR with gh
+(follow any PR template/conventions in the repo). Use whatever commands you
+judge best. Report the PR URL. Don't merge.
+```
+
+`gh` must be installed and authenticated on the host (`gh auth login`).
+
 ## Step 7: Report
 
-Show the user the PR URL. If `gh pr create` returns the URL, present it directly. Otherwise run:
-
-```bash
-gh pr view --web
-```
+- **`local`:** Show the user the PR URL. If `gh pr create` returns the URL, present it directly. Otherwise run `gh pr view --web`.
+- **`cowork`:** Confirm the handoff is ready to run on the host; offer to re-read state afterward to verify the branch pushed.
 
 **Do NOT merge** unless the user explicitly asks. Creating and merging are separate decisions.
 

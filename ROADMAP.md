@@ -32,3 +32,4 @@ No active near-term items.
 - **logchange migration** — Moved to `agentic-scaffold-plugin` where it belongs with the CHANGELOG.md lifecycle. → Decision 003. `status: decided`
 - **Dual-distribution standardization** — Added Distribution section to CLAUDE.md. → Decision 004. `status: decided`
 - **Canonicalize git-plugin instructions around AGENTS.md** — → Decision 005. `status: decided`
+- **Cowork commit/PR handoff** — Generate a ready-to-run handoff in the sandbox instead of stopping on locks. → Decision 006. `status: decided`

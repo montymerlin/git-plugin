@@ -101,3 +101,25 @@ Claude Code / Cursor (`GIT_ENV=claude-code`): remove stale lock files inline and
 **Alternatives Considered:**
 - *Leave git-plugin on the old pattern* — would keep reintroducing CLAUDE-first assumptions into cross-host workflows
 - *Support only AGENTS.md and drop CLAUDE.md checks entirely* — too abrupt; compatibility-layer discovery is more practical
+
+---
+
+## Decision 006 — Cowork commit/PR handoff instead of lock-stop (2026-06-20)
+
+**Context:** The `cowork` branch of the `commit` and `pr` skills stopped on any stale `.git/*.lock` and asked the user to clear it from a local terminal (Decision 002). Live testing on the Cowork sandbox showed this was treating a symptom. The sandbox mounts the workspace over virtiofs/FUSE with `unlink` denied outright — files can be created and written, but not deleted or renamed away. The consequence for git: a commit's first write may land, but git can't remove its own `HEAD.lock` / `index.lock` / temp objects afterward, so the very next operation dies with "Unable to create '...lock': File exists" — and nothing in the sandbox can clear it. Separately, the sandbox carries no GitHub credentials, so `push` and `gh` can't authenticate. In short, in-session git writes can't be made to work in Cowork by any means available to a skill; the constraint sits below the skill layer.
+
+**Decision:** In `cowork`, stop attempting git writes entirely. The skills do all the read-only work in-session (status, diff, convention discovery, analysis, message/PR drafting) and emit a single, context-rich **handoff prompt** the user pastes into a Claude Code chat opened in the repo, which runs the commit on the host. The prompt deliberately does **not** prescribe git commands: a fresh Claude Code session knows the repo and chooses better mechanics than the sandbox can predefine, and predefined commands risk being stale or wrong. What the prompt *does* carry is the thing only the originating session has — a why-focused summary of the work and a fully-drafted commit message — so Claude Code commits efficiently without reconstructing intent from a large diff. The prompt still names the explicit files to stage and any exclusions (the safety rails), and forbids sandbox paths, since it executes on the host.
+
+**Consequences:**
+- Cowork users get what they actually want — a complete, conventions-correct commit/PR they can run in one paste — instead of a dead-end instruction to clear locks.
+- The division of labour is principled: the prompt owns *substance* (intent, message, file scope); Claude Code owns *mechanics* (the git commands). Neither reconstructs what the other already knows.
+- The skills never wedge the repo by half-completing a write on the mount.
+- `local` behaviour is unchanged.
+- The handoff is a workaround for a platform limitation, not a fix. If Anthropic lifts the `unlink` restriction (see anthropics/claude-code issue #55206), the `cowork` branch can collapse back to a direct commit. The fork is kept deliberately thin to make that reversal cheap.
+- Detection still relies on the `CLAUDE_COWORK` env var or a `virtiofs` mount match — Decision 002's known fragility carries over.
+
+**Alternatives Considered:**
+- *Keep the lock-stop* — honest about the symptom but useless: clearing locks in Cowork is impossible, and even if cleared the next write re-wedges.
+- *Try the commit and fall back on failure* — risks leaving the repo in a stale-lock state the user must clear on the host anyway; worse UX than not writing at all.
+- *Clone to sandbox-native storage, commit there, push* — no push credentials in the sandbox, and the working copy lives on the mount; syncing back is brittle. Not viable.
+- *Emit literal git commands for the user to run* — brittle and redundant: predefining commands from inside the sandbox second-guesses Claude Code and risks stale or wrong invocations. Handing over intent + a drafted message and letting Code choose the commands is more robust. (This was the v0.5.0 first cut, revised before release.)

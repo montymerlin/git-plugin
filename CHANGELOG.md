@@ -4,6 +4,12 @@ A narrative record of how this plugin evolves. Updated after significant work se
 
 ---
 
+## 2026-06-20 — v0.5.0: Cowork commit/PR handoff
+
+Reworked how the `commit` and `pr` skills behave in the `cowork` sandbox. Previously they stopped and asked the user to clear `.git/*.lock` files from a local terminal — a dead end, because Cowork's mounted workspace denies `unlink` entirely. Git can never complete a commit there (it leaves stale locks it can't remove, wedging the next operation), and the sandbox has no push credentials. Rather than fight a constraint the host can't satisfy, the skills now do all the read-only work in-session (status, diff, convention discovery, analysis, message drafting) and emit a single context-rich **handoff prompt** the user pastes into Claude Code, which runs the commit on the host.
+
+The prompt deliberately doesn't prescribe git commands — a fresh Claude Code session knows the repo and picks better mechanics than the sandbox can predefine. What it carries is what only the originating session has: a why-focused summary of the work and a fully-drafted commit message, so Code commits without reconstructing intent from a large diff. The safety rails still travel with it — explicit files to stage, secret/scratch exclusions, grouped commits where warranted, push kept distinct — and sandbox paths (`/sessions/...`, `/mnt/.virtiofs-root/...`) are forbidden, since the prompt runs on the host. `local` behaviour is unchanged. See Decision 006.
+
 ## 2026-04-27 — Plugin audit pass + skill name fix
 
 Audited the plugin against `/create-cowork-plugin` standards. Fixed the namespaced skill `name:` frontmatter bug — all 3 SKILL.md files had `name: git:<skill>` which caused doubled runtime IDs (`git:git:commit` etc.) at install time. Per Anthropic convention, the host prepends the plugin name automatically; SKILL.md `name:` should match the bare directory name. Fixed to `commit`, `pr`, `status`.

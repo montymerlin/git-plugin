@@ -1,7 +1,7 @@
 {
   "name": "git",
-  "version": "0.4.0",
-  "description": "Git workflow toolkit for local terminal hosts and constrained sandboxes. Guided commits, pull requests, and repo orientation with AGENTS.md-aware convention discovery and Claude packaging compatibility.",
+  "version": "0.5.0",
+  "description": "Git workflow toolkit for local terminal hosts and constrained sandboxes. Guided commits, pull requests, and repo orientation with AGENTS.md-aware convention discovery; in sandboxed hosts (Cowork) it generates a context-rich commit/PR handoff prompt for Claude Code. Claude packaging compatible.",
   "author": {
     "name": "Monty Merlin"
   },

@@ -6,7 +6,7 @@ Canonical repo instructions for `git-plugin`.
 
 - **Name:** git-plugin
 - **Type:** Host-agnostic git workflow skills repo with Claude plugin packaging compatibility
-- **Version:** 0.4.0
+- **Version:** 0.5.0
 - **Stack:** Markdown skills + reference docs + lightweight install scripts
 
 ## Canonical Structure
@@ -56,9 +56,10 @@ Cowork install is via a `.plugin` zip uploaded through Claude Desktop. Two paths
 
 - This repo has no heavy runtime path requirements; skills are markdown-first.
 - Distinguish between two effective host modes:
-  - `local` — full local terminal hosts such as Claude Code, Codex, or Cursor
-  - `cowork` — constrained sandbox where stale `.git/*.lock` files cannot be removed inline
-- Use host-aware lock handling, but avoid Claude-first naming where a more general term works.
+  - `local` — full local terminal hosts such as Claude Code, Codex, or Cursor; skills stage, commit, and push directly.
+  - `cowork` — constrained sandbox (Claude Cowork) where the workspace mount denies `unlink`, so git writes can't complete and there are no push credentials. Skills do all read-only work, then emit a single context-rich **handoff prompt** for Claude Code — carrying the session's intent and a fully-drafted commit message so Code can commit without rebuilding context from the diff, while choosing the git mechanics itself. They never attempt a write that would leave a stale lock and wedge the repo, and never predefine git commands.
+- Use host-aware behaviour, but avoid Claude-first naming where a more general term works.
+- See Decision 006 for the cowork handoff rationale.
 
 ## Documentation Rules
 
@@ -83,6 +84,7 @@ Cowork install is via a `.plugin` zip uploaded through Claude Desktop. Two paths
 - Preserve explicit staging and confirmation steps
 - Read target-repo conventions before drafting commit and PR text
 - Keep lock-file handling honest to the actual host constraints
+- In `cowork`, generate a commit/PR handoff rather than attempting git writes
 - Update docs and metadata together when conventions change
 
 ### Don't
