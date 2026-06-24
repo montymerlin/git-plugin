@@ -184,13 +184,13 @@ For grouped commits, execute each group sequentially — stage, commit, then mov
 
 Do **not** run `git add`, `git commit`, or `git push` — they cannot complete on the mounted filesystem, and a partial attempt leaves stale locks that wedge the repo. And do **not** hand the user literal git commands to run: a fresh Claude Code session knows the repo and its conventions and will pick better mechanics than you can predefine from inside the sandbox.
 
-Instead produce **one deliverable**: a single, self-contained **handoff prompt** the user copies into a Claude Code chat opened in the repo. Your advantage is context — you watched the session happen. Pack that context into the prompt so Claude Code commits efficiently *without* rebuilding intent from a large diff. The prompt carries the substance (what changed, why, which files, the message); Claude Code decides the mechanics.
+Instead produce **one deliverable**: a single, self-contained **handoff prompt** the user copies into a Claude Code chat opened in the repo. Your advantage is context — you watched the session happen. Pack that context into the prompt so Claude Code grasps intent quickly and can use the diff to verify the change rather than to reconstruct what happened. The prompt carries the substance (what changed, why, which files, the message); Claude Code decides the mechanics.
 
 **Render the prompt inside a fenced code block** so it's one-click copyable. It must include:
 
 1. **Framing** — one line telling Claude Code it's committing work from a separate session and has no prior context, so everything it needs is below.
 2. **Repo** — the repo name and, if known, its path on the user's machine. Never a sandbox path (`/sessions/...`, `/mnt/.virtiofs-root/...`) — those don't exist on the host.
-3. **Session summary** — 2–5 lines on what was done and *why*, in enough detail that Claude Code does not need to read the full diff to understand intent. This is the whole point of the handoff.
+3. **Session summary** — 2–5 lines on what was done and *why*, in enough detail that Claude Code grasps intent from the summary and can use the diff to verify it. This is the whole point of the handoff.
 4. **What to commit** — the explicit files to stage, and anything to exclude (secrets, scratch, ambiguous untracked items, submodule pointers). State these as intent ("stage these / exclude these"), not as `git add` commands.
 5. **The commit message** — the full message drafted in Step 6. Delimit it with sentinel lines (`=== MESSAGE START ===` / `=== MESSAGE END ===`) rather than nested backticks, since the whole prompt is already in a code block.
 6. **Instructions to Claude Code** — clear any stale `.git/*.lock` first, follow the repo's AGENTS.md/CLAUDE.md commit conventions, commit the staged files, then push; report the resulting commit hash. Explicitly tell it to choose whatever git commands it judges best.
@@ -201,8 +201,8 @@ For grouped commits, describe each group (summary + files + message) in order wi
 
 ```text
 You're committing work from a separate Cowork session — you have no prior
-context, so everything you need is here. Don't run a full diff to infer
-intent; use the summary below.
+context, so the summary below explains the intent. Review the staged diff to
+confirm it matches this summary before committing.
 
 Repo: <repo-name> (<path-on-host if known>)
 
@@ -222,8 +222,9 @@ Commit message:
 === MESSAGE END ===
 
 Then: clear any stale .git/*.lock, follow this repo's AGENTS.md / CLAUDE.md
-commit conventions, commit the staged files, and push. Use whatever git
-commands you judge best. Report the commit hash.
+commit conventions, review the staged diff as a sanity check, commit the
+staged files, and push. Use whatever git commands you judge best. Report the
+commit hash.
 ```
 
 The explicit staged-file list and the drafted message are the safety rails — keep them precise and faithful to Steps 4–6. Everything about *how* to run git is Claude Code's call.

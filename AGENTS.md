@@ -6,7 +6,7 @@ Canonical repo instructions for `git-plugin`.
 
 - **Name:** git-plugin
 - **Type:** Host-agnostic git workflow skills repo with Claude plugin packaging compatibility
-- **Version:** 0.5.0
+- **Version:** 0.5.1
 - **Stack:** Markdown skills + reference docs + lightweight install scripts
 
 ## Canonical Structure

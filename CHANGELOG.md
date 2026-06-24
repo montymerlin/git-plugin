@@ -4,6 +4,10 @@ A narrative record of how this plugin evolves. Updated after significant work se
 
 ---
 
+## 2026-06-20 — v0.5.1: Diff review complements the handoff
+
+Light wording fix to the `commit` skill's cowork handoff so it no longer discourages running a diff. Reviewing the staged diff is a useful validation step; the handoff summary now frames itself as the *intent*, with the diff used to verify the change matches — complementing the review rather than replacing it. The generated prompt's final instruction now includes a "review the staged diff as a sanity check" step before committing. No behaviour change beyond the prompt text.
+
 ## 2026-06-20 — v0.5.0: Cowork commit/PR handoff
 
 Reworked how the `commit` and `pr` skills behave in the `cowork` sandbox. Previously they stopped and asked the user to clear `.git/*.lock` files from a local terminal — a dead end, because Cowork's mounted workspace denies `unlink` entirely. Git can never complete a commit there (it leaves stale locks it can't remove, wedging the next operation), and the sandbox has no push credentials. Rather than fight a constraint the host can't satisfy, the skills now do all the read-only work in-session (status, diff, convention discovery, analysis, message drafting) and emit a single context-rich **handoff prompt** the user pastes into Claude Code, which runs the commit on the host.
