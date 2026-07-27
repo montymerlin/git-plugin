@@ -6,7 +6,7 @@ Canonical repo instructions for `git-plugin`.
 
 - **Name:** git-plugin
 - **Type:** Host-agnostic git workflow skills repo with Claude plugin packaging compatibility
-- **Version:** 0.5.1
+- **Version:** 0.6.0
 - **Stack:** Markdown skills + reference docs + lightweight install scripts
 
 ## Canonical Structure
@@ -18,6 +18,7 @@ git-plugin/
 │   └── marketplace.json     # Claude marketplace listing
 ├── skills/
 │   ├── commit/
+│   ├── merge/
 │   ├── pr/
 │   └── status/
 ├── references/
@@ -50,7 +51,7 @@ Cowork install is via a `.plugin` zip uploaded through Claude Desktop. Two paths
 - `CLAUDE.md` is a thin compatibility layer that points Claude-family hosts back to `AGENTS.md`.
 - `skills/` is the canonical source of shared workflows.
 - `.claude-plugin/` is Claude-specific packaging metadata, not the source of truth for skill logic.
-- Repo-specific commit or PR conventions should be discovered from `AGENTS.md`, `CLAUDE.md`, or `README.md` in the target repo, in that order.
+- Repo-specific commit, merge, or PR conventions should be discovered from `AGENTS.md`, `CLAUDE.md`, or `README.md` in the target repo, in that order.
 
 ## Runtime Conventions
 
@@ -82,9 +83,10 @@ Cowork install is via a `.plugin` zip uploaded through Claude Desktop. Two paths
 
 ### Do
 - Preserve explicit staging and confirmation steps
-- Read target-repo conventions before drafting commit and PR text
+- Preserve fast-forwards and require outcome-led explanations when a merge commit is necessary
+- Read target-repo conventions before drafting commit, merge, and PR text
 - Keep lock-file handling honest to the actual host constraints
-- In `cowork`, generate a commit/PR handoff rather than attempting git writes
+- In `cowork`, generate a commit/merge/PR handoff rather than attempting git writes
 - Update docs and metadata together when conventions change
 
 ### Don't

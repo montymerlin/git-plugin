@@ -123,3 +123,27 @@ Claude Code / Cursor (`GIT_ENV=claude-code`): remove stale lock files inline and
 - *Try the commit and fall back on failure* — risks leaving the repo in a stale-lock state the user must clear on the host anyway; worse UX than not writing at all.
 - *Clone to sandbox-native storage, commit there, push* — no push credentials in the sandbox, and the working copy lives on the mount; syncing back is brittle. Not viable.
 - *Emit literal git commands for the user to run* — brittle and redundant: predefining commands from inside the sandbox second-guesses Claude Code and risks stale or wrong invocations. Handing over intent + a drafted message and letting Code choose the commands is more robust. (This was the v0.5.0 first cut, revised before release.)
+
+---
+
+## Decision 007 — Make deliberate merge commits a portable skill (2026-07-27)
+
+**Context:** Collaborator integrations across repositories were producing Git's transport-oriented defaults, including `Merge remote-tracking branch 'origin/master'`. Those subjects preserve mechanics but do not tell a collaborator what landed or why the histories were joined. Placing detailed guidance in each target repo duplicated policy, bloated agent instructions, and still left the actual merge sequence undefined. The existing `commit` skill was also an unreliable home because `git merge` often creates its commit without invoking an ordinary commit workflow.
+
+Pressure tests against v0.5.1 confirmed the gap. Agents improvised different confirmation and strategy rules, could only produce generic branch-led explanations without a prescribed inspection step, and had no merge-specific path for conflict completion or Cowork handoff.
+
+**Decision:** Add a dedicated `merge` skill as the portable source of truth. It inspects ancestry, incoming commits, and diffs before choosing between no-op, fast-forward, and merge-commit paths. Required merge commits use an outcome-led subject plus an explanatory body; meaningful conflict decisions follow that overview. The `commit` skill routes any existing `MERGE_HEAD` into this workflow. Target repos may retain a one-line pointer, while repo-specific conventions continue to override plugin defaults.
+
+Do not add a commit-message hook. A hook can reject a few generated subjects but cannot judge whether an explanation is useful, and portable hook installation can collide with a repository's existing hook path. Revisit an optional narrow validator only if transport-only messages continue escaping the skill.
+
+**Consequences:**
+- Local merges, resolved-conflict commits, and Cowork handoffs share one review and messaging contract.
+- Fast-forwards remain fast-forwards; the policy does not manufacture merge commits for prose.
+- Merge authorisation remains separate from pushing, branch deletion, stashing, rebasing, and history rewriting.
+- Repositories using the plugin no longer need to duplicate detailed merge-message instructions.
+- The plugin grows from three skills to four and receives a minor version release.
+
+**Alternatives Considered:**
+- *Keep the rule in each repo's CONTRIBUTING.md or AGENTS.md* — visible locally but duplicated, easy to drift, and detached from the operation that needs the judgement.
+- *Extend only the commit skill* — misses merges that commit directly and obscures the distinct ancestry/conflict workflow.
+- *Enforce with a hook* — catches only recognisable bad strings, cannot ensure an accessible explanation, is bypassable, and complicates portable installation.

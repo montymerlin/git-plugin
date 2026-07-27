@@ -1,6 +1,6 @@
 # Setup Guide
 
-**git-plugin** — Git workflow toolkit for local terminal hosts and constrained sandboxes. Guided commits, pull requests, and repo orientation with AGENTS.md-aware convention discovery.
+**git-plugin** — Git workflow toolkit for local terminal hosts and constrained sandboxes. Guided commits, deliberate merges, pull requests, and repo orientation with AGENTS.md-aware convention discovery.
 
 ---
 
@@ -44,9 +44,9 @@ If you're an AI agent that has been asked to install this plugin, follow this de
 
 | Host                  | Status         | Notes                                                |
 |:---------------------|:---------------|:-----------------------------------------------------|
-| **Cowork**           | ✓              | Upload `.plugin` from `_dist/`; slash commands `/commit`, `/pr`, `/status` |
+| **Cowork**           | ✓              | Upload `.plugin` from `_dist/`; slash commands `/commit`, `/merge`, `/pr`, `/status` |
 | **Claude Code CLI**  | ✓              | `claude plugins install …`; skills load automatically |
-| **Codex**            | ✓ partial      | `scripts/install_codex_skills.sh`; Codex-only, no local terminal lock handling |
+| **Codex**            | ✓              | `scripts/install_codex_skills.sh`; installs the four skills as global links |
 | **Cursor / VS Code** | ✗              | Not compatible (no skill slash-command UI in these hosts) |
 | **Agent SDK**        | ✓              | Standard plugin loader; use raw skills from `skills/` |
 | **Anthropic API**    | partial        | Manual skill loading via SKILL.md into system prompts |
@@ -69,20 +69,20 @@ Download `git-<version>.plugin` from the GitHub Releases page of `montymerlin/gi
 ```bash
 git clone https://github.com/montymerlin/git-plugin.git
 cd git-plugin
-zip -r /tmp/git-0.4.0.plugin . \
+zip -r /tmp/git-0.6.0.plugin . \
   -x "*.DS_Store" "*/__pycache__/*" "*.pyc" ".git/*" "node_modules/*" "*.log" "_dist/*"
 ```
 
-The output `/tmp/git-0.4.0.plugin` is your upload artifact.
+The output `/tmp/git-0.6.0.plugin` is your upload artifact.
 
 **Option 3 — built by the workspace `cowork-plugin-packager` skill** (montymerlinHQ collaborators only):
-The packaged file lives at `ops/plugins/_dist/git-0.4.0.plugin` after running the skill.
+The packaged file lives at `ops/plugins/_dist/git-0.6.0.plugin` after running the skill.
 
 Then upload:
 
 1. Open Claude Desktop → **Cowork** → **Plugins** (sidebar).
 2. Click **+ Add plugin** → **Upload a file** → select the `.plugin`.
-3. Confirm. Skills appear immediately under `/commit`, `/pr`, `/status`.
+3. Confirm. Skills appear immediately under `/commit`, `/merge`, `/pr`, `/status`.
 
 For organization-wide install: **Organization settings** → **Plugins** → **Add plugins** → **Upload a file**.
 
@@ -90,10 +90,10 @@ For organization-wide install: **Organization settings** → **Plugins** → **A
 
 ```bash
 # Confirm the manifest is at the zip root (must show .claude-plugin/plugin.json)
-unzip -l /tmp/git-0.4.0.plugin | head -20
+unzip -l /tmp/git-0.6.0.plugin | head -20
 
 # Confirm size is under 50 MB
-du -h /tmp/git-0.4.0.plugin
+du -h /tmp/git-0.6.0.plugin
 ```
 
 **Known quirks**:
@@ -133,7 +133,7 @@ mkdir -p ./.claude/plugins
 ln -s ~/src/git-plugin ./.claude/plugins/git-plugin
 ```
 
-Skills load automatically once installed. Type `/commit`, `/pr`, `/status` in Claude Code chat.
+Skills load automatically once installed. Type `/commit`, `/merge`, `/pr`, `/status` in Claude Code chat.
 
 ---
 
@@ -147,7 +147,7 @@ bash scripts/install_codex_skills.sh --from-github
 
 This script:
 1. Clones (or updates) `git-plugin` to `~/.codex/vendor_imports/repos/git-plugin/`.
-2. Links skills into `~/.codex/skills/git-commit/`, `git-pr/`, `git-status/`.
+2. Links skills into `~/.codex/skills/git-commit/`, `git-merge/`, `git-pr/`, `git-status/`.
 3. Injects skill UI stubs that source from the vendor repo.
 
 Restart Codex to pick up new skills.
@@ -158,7 +158,7 @@ Restart Codex to pick up new skills.
 
 ### Cursor / VS Code
 
-**Not compatible.** These hosts use MCP servers but do not load Claude plugin skill slash-commands. If a future version of git-plugin includes an MCP server, you can wire it into `.cursor/mcp.json` or `~/.continue/config.json`, but the `/commit`, `/pr`, `/status` UI would not be available.
+**Not compatible.** These hosts use MCP servers but do not load Claude plugin skill slash-commands. If a future version of git-plugin includes an MCP server, you can wire it into `.cursor/mcp.json` or `~/.continue/config.json`, but the `/commit`, `/merge`, `/pr`, `/status` UI would not be available.
 
 ---
 
@@ -166,7 +166,7 @@ Restart Codex to pick up new skills.
 
 For hosts that don't support Claude plugin manifests, use raw markdown skills directly:
 
-1. Copy `skills/commit/SKILL.md`, `skills/pr/SKILL.md`, `skills/status/SKILL.md` into your host's skill directory.
+1. Copy `skills/commit/SKILL.md`, `skills/merge/SKILL.md`, `skills/pr/SKILL.md`, `skills/status/SKILL.md` into your host's skill directory.
 2. Copy `references/` (optional, for extra context).
 3. The skills invoke git via bash; ensure `git` (and `gh` for `/pr`) are in `PATH`.
 
@@ -186,17 +186,10 @@ This is the fallback for Agent SDK custom hosts and direct Anthropic API integra
 This plugin distinguishes between **local terminal hosts** (Claude Code, Codex, Cursor) and **Cowork sandboxes**.
 
 ### Local Terminal Hosts
-Claude Code, Codex, and Cursor can remove stale `.git/*.lock` files inline. If `/commit`, `/pr`, or `/status` encounter a lock file, the skill will offer to clear it and retry.
+Claude Code, Codex, and Cursor can remove verified stale `.git/*.lock` files inline. If `/commit`, `/merge`, `/pr`, or `/status` encounter a lock file, the workflow first checks that no Git process is using it.
 
 ### Cowork Sandbox
-Cowork-style sandboxed environments cannot remove `.git/*.lock` files from inside the session. The skills stop, report the lock file path, and ask you to clear it from a local terminal:
-
-```bash
-# From your local terminal:
-rm /path/to/repo/.git/*.lock
-```
-
-Then return to Cowork and retry the skill.
+Cowork-style sandboxed environments cannot complete Git writes safely. `/commit`, `/merge`, and `/pr` therefore perform read-only analysis and produce a context-rich handoff for a local terminal agent instead of attempting a partial operation that leaves locks behind.
 
 ---
 
@@ -207,7 +200,7 @@ The plugin reads local repository conventions from:
 2. `CLAUDE.md` (fallback)
 3. `README.md` (last resort)
 
-When you use `/commit` or `/pr`, the skill scans the target repo for these files to discover commit/PR naming conventions, co-author preferences, and branch strategies. This allows the same plugin to adapt to different repos without manual configuration.
+When you use `/commit`, `/merge`, or `/pr`, the skill scans the target repo for these files to discover commit, merge, PR, co-author, and branch conventions. This allows the same plugin to adapt to different repos without manual configuration.
 
 ---
 

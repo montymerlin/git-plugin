@@ -79,6 +79,7 @@ install_link() {
 }
 
 install_link "git-commit" "$SOURCE_ROOT/skills/commit"
+install_link "git-merge" "$SOURCE_ROOT/skills/merge"
 install_link "git-pr" "$SOURCE_ROOT/skills/pr"
 install_link "git-status" "$SOURCE_ROOT/skills/status"
 

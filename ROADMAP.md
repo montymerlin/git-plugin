@@ -33,3 +33,4 @@ No active near-term items.
 - **Dual-distribution standardization** — Added Distribution section to CLAUDE.md. → Decision 004. `status: decided`
 - **Canonicalize git-plugin instructions around AGENTS.md** — → Decision 005. `status: decided`
 - **Cowork commit/PR handoff** — Generate a ready-to-run handoff in the sandbox instead of stopping on locks. → Decision 006. `status: decided`
+- **`/merge` skill** — Make ancestry-aware integration and human-readable merge commits portable across repositories. → Decision 007. `status: decided`

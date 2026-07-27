@@ -1,11 +1,11 @@
 {
   "name": "git",
-  "version": "0.5.1",
-  "description": "Git workflow toolkit for local terminal hosts and constrained sandboxes. Guided commits, pull requests, and repo orientation with AGENTS.md-aware convention discovery; in sandboxed hosts (Cowork) it generates a context-rich commit/PR handoff prompt for Claude Code. Claude packaging compatible.",
+  "version": "0.6.0",
+  "description": "Git workflow toolkit for local terminal hosts and constrained sandboxes. Guided commits, deliberate merges, pull requests, and repo orientation with AGENTS.md-aware convention discovery and context-rich Cowork handoffs. Claude packaging compatible.",
   "author": {
     "name": "Monty Merlin"
   },
   "repository": "https://github.com/montymerlin/git-plugin",
   "license": "MIT",
-  "keywords": ["git", "commit", "pull-request", "workflow", "version-control", "agents-md", "codex", "cowork"]
+  "keywords": ["git", "commit", "merge", "pull-request", "workflow", "version-control", "agents-md", "codex", "cowork"]
 }

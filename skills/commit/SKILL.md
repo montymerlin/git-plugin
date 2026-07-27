@@ -13,6 +13,10 @@ description: >
 
 Produce clean, meaningful commits with well-crafted messages. Follow these steps in order. Do not skip steps.
 
+## Merge-state routing
+
+Before Step 1, run `git rev-parse -q --verify MERGE_HEAD`. If it succeeds, stop this ordinary commit workflow and use `git:merge`. A merge in progress needs parent-aware inspection, conflict checks, and an explanatory merge message; do not treat it as a normal staged commit or accept Git's generated message.
+
 The workflow runs in one of two modes, chosen automatically in Step 1:
 
 - **`local`** — full local terminal hosts (Claude Code, Codex, Cursor). The skill stages and commits directly.

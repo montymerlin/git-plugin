@@ -4,6 +4,12 @@ A narrative record of how this plugin evolves. Updated after significant work se
 
 ---
 
+## 2026-07-27 — v0.6.0: Deliberate, human-readable merges
+
+Added `/merge` as the portable workflow for integrating branches and collaborator updates. It inspects both histories before choosing no-op, fast-forward, or merge-commit behaviour; required merge commits receive an outcome-led subject and explanatory body instead of Git's transport-only default. Conflict resolutions are reviewed against both parents, meaningful choices are documented, and final verification checks the exact parent commits.
+
+The existing `/commit` workflow now routes an in-progress `MERGE_HEAD` into `/merge`. Cowork receives a merge-specific, context-rich handoff that requires the local agent to refresh remote state before acting. Pushes, branch deletion, stashing, rebasing, and history rewriting remain separately authorised. The Codex installer and all plugin discovery/version metadata now expose the fourth skill. See Decision 007.
+
 ## 2026-06-20 — v0.5.1: Diff review complements the handoff
 
 Light wording fix to the `commit` skill's cowork handoff so it no longer discourages running a diff. Reviewing the staged diff is a useful validation step; the handoff summary now frames itself as the *intent*, with the diff used to verify the change matches — complementing the review rather than replacing it. The generated prompt's final instruction now includes a "review the staged diff as a sanity check" step before committing. No behaviour change beyond the prompt text.
