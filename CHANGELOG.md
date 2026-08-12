@@ -6,7 +6,7 @@ A narrative record of how this plugin evolves. Updated after significant work se
 
 ## 2026-08-12 — v0.6.1: Verified post-merge cleanup
 
-The merge workflow now reconciles its source after every successful or already-integrated merge. It detects fully merged local branches and their linked worktrees, verifies the physical worktree path and clean state, and offers one separately authorised local cleanup action. Remote-branch deletion remains an independent external action. This closes the gap where completed worktrees could survive indefinitely—and catches split-Git configurations that make a linked worktree silently resolve to the main checkout.
+The merge workflow now reconciles its source after every successful or already-integrated merge. It detects fully merged local branches and their linked worktrees, verifies the physical worktree path and clean state, and offers one separately authorised local cleanup action. Remote-branch deletion remains an independent external action. This closes the gap where completed worktrees could survive indefinitely—and catches split-Git configurations that make a linked worktree silently resolve to the main checkout. Separate-Git-dir primary checkouts are handled explicitly: Git's common-directory placeholder is resolved through its configured `core.worktree` before the same physical-root check is applied.
 
 ## 2026-07-27 — v0.6.0: Deliberate, human-readable merges
 

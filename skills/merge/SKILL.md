@@ -186,11 +186,20 @@ deleting it.
 2. Reconfirm that the local source branch is fully contained in the verified
    target with `git merge-base --is-ancestor <source-branch> <target>`.
 3. Inspect `git worktree list --porcelain` for a worktree attached to that
-   branch. For each matching path, require both:
-   - `git -C <path> rev-parse --show-toplevel` exactly equals the listed path;
-     a mismatch means worktree configuration is broken, so stop and diagnose;
-   - `git -C <path> status --porcelain` is empty. Untracked files count as
-     work and block removal.
+   branch. Resolve its physical checkout path before testing it:
+   - normally, use the listed path unchanged;
+   - Git reports the primary checkout of a `--separate-git-dir` repository as
+     the common Git directory. Only when the canonical listed path exactly
+     equals the canonical common Git directory, resolve the primary checkout
+     from its configured `core.worktree` (prefer the per-worktree config when
+     `extensions.worktreeConfig` is enabled). If that setting is absent,
+     relative, or invalid, stop and diagnose rather than guessing a path.
+   Then require both:
+   - `git -C <physical-path> rev-parse --show-toplevel` exactly equals the
+     physical path. Any other mismatch means worktree configuration is broken,
+     so stop and diagnose;
+   - `git -C <physical-path> status --porcelain` is empty. Untracked files
+     count as work and block removal.
 4. Report one disposition:
    - **cleanup available** — branch fully merged and any linked worktree is
      correctly resolved and clean;
@@ -222,4 +231,5 @@ delete the directory directly.
 | Stopping after merge verification | Always reconcile and report the source branch/worktree disposition |
 | Assuming merge permission includes cleanup | Offer verified local cleanup and wait for separate approval |
 | Treating local and remote deletion as one action | Keep remote deletion separately authorised as external state |
-| Trusting `git -C <worktree>` without checking its root | Require `--show-toplevel` to equal the listed physical path before declaring it clean |
+| Treating a separate Git directory as the physical primary checkout | Resolve `core.worktree` only when the listed path equals the common Git directory, then verify that physical root |
+| Trusting `git -C <worktree>` without checking its root | Require `--show-toplevel` to equal the resolved physical path before declaring it clean |
