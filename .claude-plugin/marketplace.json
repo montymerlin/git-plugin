@@ -8,7 +8,7 @@
       "name": "git",
       "source": "./",
       "description": "Git workflow toolkit — guided commits, deliberate merges, pull requests, and repo orientation for local terminal hosts and constrained sandboxes, with AGENTS.md-aware convention discovery and context-rich Cowork handoffs.",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "author": {
         "name": "Monty Merlin"
       },

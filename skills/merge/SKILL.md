@@ -13,7 +13,9 @@ Integrate histories deliberately. A merge commit should explain the outcome to a
 ## Non-negotiable boundaries
 
 - Read the target repo's `AGENTS.md`, `CLAUDE.md`, then `README.md`; local rules override these defaults.
-- Never auto-stash, rebase, discard work, delete a branch, rewrite history, push, or force-push.
+- Never auto-stash, rebase, discard work, delete a branch or worktree, rewrite
+  history, push, or force-push. Source cleanup is a reviewed post-merge action,
+  not implied by merge approval.
 - Keep a possible fast-forward as a fast-forward. Do not force a merge commit merely to attach prose.
 - Never finish a merge commit with a transport-only subject such as `Merge branch 'main'` or `Merge remote-tracking branch 'origin/main'`.
 - Inspect the commits and diff before describing them. If the outcome is unclear, stop and ask rather than inventing an explanation.
@@ -68,7 +70,11 @@ Classify the result:
 | Histories diverged | Deliberate merge commit using `--no-ff --no-commit` |
 | User explicitly requires a merge commit on a fast-forwardable branch | Confirm the exception, then use `--no-ff --no-commit` |
 
-Present the target, source, relationship, outcomes on both sides, strategy, specifically named checks, and explicit boundaries: **no push and no branch deletion**. For a merge commit, include the exact message. Wait for confirmation.
+Present the target, source, relationship, outcomes on both sides, strategy,
+specifically named checks, and explicit boundaries: **no push and no source
+cleanup during the merge**. Explain that verified local cleanup will be offered
+after integration. For a merge commit, include the exact message. Wait for
+confirmation.
 
 ## 3. Write the message for people
 
@@ -143,7 +149,10 @@ Do not run fetch, merge, add, commit, abort, or push in a constrained Cowork mou
 - instructions to re-read repo conventions, fetch when remote work is involved, and recompute ancestry and counts rather than trusting potentially stale sandbox refs;
 - a hard stop when either target or source has moved: re-inspect both commit ranges and diffs, revise the strategy/message as needed, and obtain renewed user approval before merging;
 - instructions to stop for semantic conflicts, run the specifically named checks, verify ancestry/parents, and report the resulting commit;
-- explicit prohibitions on pushing, deleting branches, stashing, rebasing, or rewriting history unless separately authorised.
+- explicit prohibitions on pushing, deleting branches or worktrees, stashing,
+  rebasing, or rewriting history unless separately authorised;
+- the post-merge source-disposition evidence from **Source cleanup**, and the
+  exact local or remote cleanup already approved, if any.
 
 Carry intent and safety boundaries, not a brittle list of shell commands.
 
@@ -158,9 +167,49 @@ git log -1 --format=fuller
 git rev-list --parents -n 1 HEAD
 ```
 
-Confirm the source is reachable, the expected fast-forward or parent shape occurred, relevant tests passed, and no unrelated work changed. Do not push or delete the source branch unless the user asks separately.
+Confirm the source is reachable, the expected fast-forward or parent shape
+occurred, relevant tests passed, and no unrelated work changed. Then continue
+to **Source cleanup**; verification is not the end of the workflow while a
+merged source branch or linked worktree remains unreviewed.
 
 For a merge commit, confirm the recorded target commit is the first parent and the recorded source commit is the second parent. For a fast-forward, confirm `HEAD` equals the recorded source commit.
+
+## 7. Source cleanup
+
+Always reconcile the source after a successful integration or an
+already-integrated no-op. Surface obsolete local state without silently
+deleting it.
+
+1. Resolve whether the reviewed source is a local branch. A raw commit, tag, or
+   remote-tracking ref has no local branch to delete; never guess one from the
+   commit ID.
+2. Reconfirm that the local source branch is fully contained in the verified
+   target with `git merge-base --is-ancestor <source-branch> <target>`.
+3. Inspect `git worktree list --porcelain` for a worktree attached to that
+   branch. For each matching path, require both:
+   - `git -C <path> rev-parse --show-toplevel` exactly equals the listed path;
+     a mismatch means worktree configuration is broken, so stop and diagnose;
+   - `git -C <path> status --porcelain` is empty. Untracked files count as
+     work and block removal.
+4. Report one disposition:
+   - **cleanup available** — branch fully merged and any linked worktree is
+     correctly resolved and clean;
+   - **cleanup blocked** — name the unique commits, dirty files, active merge,
+     broken path resolution, or host-managed constraint;
+   - **nothing local to clean** — source was not a local branch or is already
+     absent.
+5. When cleanup is available, offer one explicit local action: remove the
+   linked worktree (if any), prune its administrative record, then delete the
+   source branch with safe deletion. Wait for approval. Merge approval alone is
+   insufficient.
+6. After approved local cleanup, verify the path and local branch are absent
+   and `git worktree list --porcelain` is consistent.
+7. Treat remote-branch deletion as a separate external action. Report whether
+   the remote branch remains and ask independently before deleting it.
+
+If the host supplies a native worktree lifecycle, use that mechanism for
+removal. Otherwise use Git's worktree removal from a different worktree; never
+delete the directory directly.
 
 ## Common mistakes
 
@@ -170,4 +219,7 @@ For a merge commit, confirm the recorded target commit is the first parent and t
 | Forcing `--no-ff` on every merge | Preserve fast-forwards unless the user explicitly requires a merge commit |
 | Describing commits from branch names | Read the incoming log and diff; ask if intent remains unclear |
 | Treating resolved conflicts as an ordinary commit | Route through this workflow and document meaningful choices |
-| Assuming merge permission includes push or cleanup | Keep publication and branch deletion separately authorised |
+| Stopping after merge verification | Always reconcile and report the source branch/worktree disposition |
+| Assuming merge permission includes cleanup | Offer verified local cleanup and wait for separate approval |
+| Treating local and remote deletion as one action | Keep remote deletion separately authorised as external state |
+| Trusting `git -C <worktree>` without checking its root | Require `--show-toplevel` to equal the listed physical path before declaring it clean |

@@ -1,6 +1,6 @@
 {
   "name": "git",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Git workflow toolkit for local terminal hosts and constrained sandboxes. Guided commits, deliberate merges, pull requests, and repo orientation with AGENTS.md-aware convention discovery and context-rich Cowork handoffs. Claude packaging compatible.",
   "author": {
     "name": "Monty Merlin"

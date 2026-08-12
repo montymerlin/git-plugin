@@ -14,7 +14,7 @@ Git workflow toolkit for local terminal hosts and constrained sandboxes. Guided 
 ## Core Behaviour
 
 - **Safety-first** — never auto-pushes, never blanket-stages, and warns about secrets, large binaries, and detached HEAD.
-- **Deliberate merges** — preserves fast-forwards, explains required merge commits in plain language, and keeps push and branch cleanup separately authorised.
+- **Deliberate merges** — preserves fast-forwards, explains required merge commits in plain language, reconciles merged source worktrees and branches, and keeps cleanup and push separately authorised.
 - **Convention-aware** — reads repo conventions from `AGENTS.md`, `CLAUDE.md`, or `README.md` in the target repo.
 - **Host-aware** — local terminal hosts perform approved Git writes directly; Cowork-style sandboxes (where the mount blocks `unlink`) get a context-rich commit/merge/PR handoff prompt for Claude Code instead.
 
@@ -34,7 +34,7 @@ See [SETUP.md](SETUP.md) for full install details across Cowork, Claude Code, Co
 
 **TL;DR**:
 - **Claude Code CLI**: `claude plugins install github.com/montymerlin/git-plugin`
-- **Cowork**: Upload `git-0.6.0.plugin` from `ops/plugins/_dist/` to Claude Desktop → Plugins.
+- **Cowork**: Upload `git-0.6.1.plugin` from `ops/plugins/_dist/` to Claude Desktop → Plugins.
 - **Codex**: `bash scripts/install_codex_skills.sh --from-github`
 
 ## Requirements

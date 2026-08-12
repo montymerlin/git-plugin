@@ -69,14 +69,14 @@ Download `git-<version>.plugin` from the GitHub Releases page of `montymerlin/gi
 ```bash
 git clone https://github.com/montymerlin/git-plugin.git
 cd git-plugin
-zip -r /tmp/git-0.6.0.plugin . \
+zip -r /tmp/git-0.6.1.plugin . \
   -x "*.DS_Store" "*/__pycache__/*" "*.pyc" ".git/*" "node_modules/*" "*.log" "_dist/*"
 ```
 
-The output `/tmp/git-0.6.0.plugin` is your upload artifact.
+The output `/tmp/git-0.6.1.plugin` is your upload artifact.
 
 **Option 3 — built by the workspace `cowork-plugin-packager` skill** (montymerlinHQ collaborators only):
-The packaged file lives at `ops/plugins/_dist/git-0.6.0.plugin` after running the skill.
+The packaged file lives at `ops/plugins/_dist/git-0.6.1.plugin` after running the skill.
 
 Then upload:
 
@@ -90,10 +90,10 @@ For organization-wide install: **Organization settings** → **Plugins** → **A
 
 ```bash
 # Confirm the manifest is at the zip root (must show .claude-plugin/plugin.json)
-unzip -l /tmp/git-0.6.0.plugin | head -20
+unzip -l /tmp/git-0.6.1.plugin | head -20
 
 # Confirm size is under 50 MB
-du -h /tmp/git-0.6.0.plugin
+du -h /tmp/git-0.6.1.plugin
 ```
 
 **Known quirks**:
