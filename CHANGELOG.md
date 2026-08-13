@@ -4,7 +4,24 @@ A narrative record of how this plugin evolves. Updated after significant work se
 
 ---
 
-## 2026-08-12 — v0.6.1: Verified post-merge cleanup
+## 2026-08-13 — v0.6.2: Authentication, as layers rather than folklore
+
+Added `references/github-authentication.md`, a portable explainer for the question that
+keeps recurring in a confusing form: why a machine can clone, fetch, pull and push
+perfectly while `gh` reports itself signed out. The answer is that Git transport and the
+GitHub API are separate layers with separate credentials and separate secure stores, and
+the doc lays out all four — transport, API, credential storage, and the interface the
+person or agent actually operates — as a capability map, alongside the secure-storage
+model and recovery checks.
+
+This matters for `/pr` specifically: HTTPS with Git Credential Manager and SSH are both
+fine Git transports, but neither on its own grants an agent the GitHub API access that
+opening a pull request needs. `SETUP.md` now says so at the point where someone is
+choosing, rather than leaving it to be discovered when `/pr` fails.
+
+Wired in from the places a reader arrives from — `README.md`, `SETUP.md`, and the
+"do I need PRs?" section of `git-explained.md` — and declared in `AGENTS.md` as the
+source of truth for these distinctions. Documentation only; no skill behaviour changes.
 
 The merge workflow now reconciles its source after every successful or already-integrated merge. It detects fully merged local branches and their linked worktrees, verifies the physical worktree path and clean state, and offers one separately authorised local cleanup action. Remote-branch deletion remains an independent external action. This closes the gap where completed worktrees could survive indefinitely—and catches split-Git configurations that make a linked worktree silently resolve to the main checkout. Separate-Git-dir primary checkouts are handled explicitly: Git's common-directory placeholder is resolved through its configured `core.worktree` before the same physical-root check is applied.
 

@@ -179,6 +179,8 @@ This is the fallback for Agent SDK custom hosts and direct Anthropic API integra
 - **git** — any recent version
 - **gh** — required for `/pr` (pull request creation); install from https://cli.github.com/
 
+The standard interactive setup is Git plus an authenticated GitHub CLI browser login. HTTPS with Git Credential Manager and SSH are supported Git-transport alternatives, but they do not by themselves give an agent GitHub API access for pull requests. See [GitHub Authentication for Git and AI Tools](references/github-authentication.md) for the full capability map, secure-storage model, and recovery checks.
+
 ---
 
 ## Host-aware Lock Handling

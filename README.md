@@ -42,12 +42,14 @@ See [SETUP.md](SETUP.md) for full install details across Cowork, Claude Code, Co
 - `git` — any recent version
 - `gh` — required for `/pr`
 
+For the distinction between Git transport, GitHub API access, credential storage, GitHub Desktop, and automation credentials, see [GitHub Authentication for Git and AI Tools](references/github-authentication.md).
+
 ## Repo Conventions
 
 - `AGENTS.md` is canonical for this repo.
 - `CLAUDE.md` is a compatibility wrapper.
 - `.claude-plugin/` is packaging metadata, not the source of truth for skill behaviour.
-- `references/git-explained.md` is supporting guidance, not a runtime dependency.
+- `references/git-explained.md` and `references/github-authentication.md` are supporting guidance, not runtime dependencies.
 
 ## License
 

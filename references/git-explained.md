@@ -133,6 +133,8 @@ Less than you think. Git keeps history. Most mistakes can be corrected with a fo
 
 No. In small teams, PRs are optional for routine content work and recommended for risky changes.
 
+For how Git, GitHub CLI, SSH, credential helpers, GitHub Desktop, and AI tools authenticate, see [GitHub Authentication for Git and AI Tools](github-authentication.md).
+
 ## "What if two people edit similar files?"
 
 Git will ask for conflict resolution. This is normal. Resolve thoughtfully and continue.

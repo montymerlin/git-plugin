@@ -22,7 +22,8 @@ git-plugin/
 │   ├── pr/
 │   └── status/
 ├── references/
-│   └── git-explained.md
+│   ├── git-explained.md
+│   └── github-authentication.md
 ├── scripts/
 │   ├── install_codex_skills.sh
 │   └── update_codex_skills.sh
@@ -70,6 +71,7 @@ Cowork install is via a `.plugin` zip uploaded through Claude Desktop. Two paths
 - DECISIONS.md logs major structural choices before implementation.
 - ROADMAP.md holds future ideas until they become decisions.
 - CHANGELOG.md records narrative milestones after significant work.
+- `references/github-authentication.md` is the portable source of truth for Git transport, GitHub API, credential-storage, Desktop, and automation authentication distinctions.
 
 ## Design Principles
 
