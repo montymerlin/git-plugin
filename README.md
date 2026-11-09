@@ -53,4 +53,4 @@ For the distinction between Git transport, GitHub API access, credential storage
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).

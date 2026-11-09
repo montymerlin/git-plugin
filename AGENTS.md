@@ -34,6 +34,7 @@ git-plugin/
 ├── DECISIONS.md
 ├── ROADMAP.md
 ├── README.md
+├── LICENSE                # MIT
 └── .gitignore
 ```
 

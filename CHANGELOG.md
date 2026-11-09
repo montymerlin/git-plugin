@@ -4,6 +4,14 @@ A narrative record of how this plugin evolves. Updated after significant work se
 
 ---
 
+## 2026-11-09 — An MIT LICENSE file to match what the plugin already declared
+
+The plugin had said MIT in `plugin.json` and the README since it began, but shipped no
+licence text, so GitHub showed no licence and anyone reusing it had nothing to point at.
+Added the standard MIT `LICENSE` (Copyright (c) 2026 Monty Bryant, the same as the other
+plugins in the portfolio) and pointed the README's License section at it. No change to
+the licence itself or to skill behaviour.
+
 ## 2026-08-13 — v0.6.2: Authentication, as layers rather than folklore
 
 Added `references/github-authentication.md`, a portable explainer for the question that
