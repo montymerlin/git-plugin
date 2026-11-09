@@ -44,7 +44,7 @@ If you're an AI agent that has been asked to install this plugin, follow this de
 
 | Host                  | Status         | Notes                                                |
 |:---------------------|:---------------|:-----------------------------------------------------|
-| **Cowork**           | ✓              | Upload `.plugin` from `_dist/`; slash commands `/commit`, `/merge`, `/pr`, `/status` |
+| **Cowork**           | ✓              | Add the GitHub marketplace, or upload a built `.plugin`; slash commands `/commit`, `/merge`, `/pr`, `/status` |
 | **Claude Code CLI**  | ✓              | `claude plugins install …`; skills load automatically |
 | **Codex**            | ✓              | `scripts/install_codex_skills.sh`; installs the four skills as global links |
 | **Cursor / VS Code** | ✗              | Not compatible (no skill slash-command UI in these hosts) |
@@ -76,7 +76,7 @@ zip -r /tmp/git-0.6.1.plugin . \
 The output `/tmp/git-0.6.1.plugin` is your upload artifact.
 
 **Option 3 — built by the workspace `cowork-plugin-packager` skill** (montymerlinHQ collaborators only):
-The packaged file lives at `ops/plugins/_dist/git-0.6.1.plugin` after running the skill.
+The skill writes the packaged file to a temporary folder and prints its path.
 
 Then upload:
 

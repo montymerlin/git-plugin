@@ -42,7 +42,7 @@ git-plugin/
 
 Cowork install is via a `.plugin` zip uploaded through Claude Desktop. Two paths:
 
-1. **Use the `cowork-plugin-packager` skill** in the montymerlinHQ workspace — runs validation, packaging, and verification. Produces `git-<version>.plugin` in `ops/plugins/_dist/`.
+1. **Use the `cowork-plugin-packager` skill** in the montymerlinHQ workspace — runs validation, packaging, and verification. Produces `git-<version>.plugin` in a temporary folder.
 2. **Build by hand** — see `SETUP.md` § "Build the .plugin yourself" for the raw `zip` command and verification steps. Use this when working outside montymerlinHQ.
 
 `SETUP.md` is the single source of truth for install pathways across Cowork, Claude Code CLI, Codex, Cursor/VS Code, and Agent SDK — read it before changing install or packaging behavior.
